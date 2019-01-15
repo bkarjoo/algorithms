@@ -1,0 +1,25 @@
+import edu.princeton.cs.algs4.Stopwatch;
+
+public class ThreeSumBrute
+{
+  public static int count(int[] a)
+  {
+    int N = a.length;
+    int count = 0;
+    for (int i = 0; i < N; i++)
+      for (int j = i + 1; j < N; j++)
+        for (int k = j + 1; k < N; k++)
+          if (a[i] + a[j] + a[k] == 0)
+            count++;
+    return count;
+  }
+
+    public static void main(String [] args)
+    {
+        Stopwatch stopwatch = new Stopwatch();
+        int[] a = {30, -40, -20, -10, 40, 0, 10, 5};
+        double time = stopwatch.elapsedTime();
+        System.out.println(count(a));
+        System.out.println(time);
+    }
+}
