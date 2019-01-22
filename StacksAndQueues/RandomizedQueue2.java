@@ -58,7 +58,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
   private class RandomIterator implements Iterator<Item>
   {
-    Item[] a = (Item[]) new Object[end];
+    int[] a = new int[end];
     int tail = 0;
 
     public RandomIterator()
@@ -66,7 +66,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
       int i = 0;
       for (; i < end; i++)
       {
-        a[i] = data[i];
+        a[i] = i;
       }
       tail = i;
     }
@@ -85,11 +85,10 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     {
       if (!hasNext()) throw new NoSuchElementException();
       int r = StdRandom.uniform(tail);
-      Item temp = a[r];
+      int i = a[r];
       a[r] = a[tail - 1];
-      a[tail - 1] = null;
       tail--;
-      return temp;
+      return data[i];
     }
   }
 
