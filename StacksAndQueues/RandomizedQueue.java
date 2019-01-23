@@ -24,17 +24,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
   {
     if (item == null) throw new IllegalArgumentException();
     if (end == data.length) resize(data.length * 2);
-    // if (end > 0)
-    // {
-    //   int r = StdRandom.uniform(end);
-    //   Item temp = data[r];
-    //   data[end++] = temp;
-    //   data[r] = item;
-    // }
-    // else
-    // {
     data[end++] = item;
-    // }
   }
 
   public Item dequeue()
@@ -45,7 +35,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     Item temp = data[r];
     data[r] = data[end-1];
     data[--end] = null;
-    if (end > 0 && end == data.length / 4) resize(data.length / 2);
+    if (end > 0 && end <= data.length / 4) resize(data.length / 2);
     return temp;
   }
 
@@ -59,16 +49,18 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
   private class RandomIterator implements Iterator<Item>
   {
     int[] a = new int[end];
-    int tail = 0;
+    int tail = end;
 
     public RandomIterator()
     {
-      int i = 0;
-      for (; i < end; i++)
+      for (int i = 0; i < a.length; i++)
       {
+        int r = StdRandom.uniform(i + 1);
         a[i] = i;
+        int temp = a[r];
+        a[r] = a[i];
+        a[i] = temp;
       }
-      tail = i;
     }
 
     public boolean hasNext()
@@ -84,9 +76,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     public Item next()
     {
       if (!hasNext()) throw new NoSuchElementException();
-      int r = StdRandom.uniform(tail);
-      int i = a[r];
-      a[r] = a[tail - 1];
+      int i = a[tail - 1];
       tail--;
       return data[i];
     }
@@ -97,9 +87,8 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
   public static void main(String[] args)
   {
     RandomizedQueue<Integer> rq = new RandomizedQueue<Integer>();
-    rq.enqueue(0);
-    rq.enqueue(4);
-    StdOut.println(rq.dequeue());
+    for (int i = 0; i < 20; i++) rq.enqueue(i);
+    for (int i: rq) StdOut.println(i);
 
   }
 }
